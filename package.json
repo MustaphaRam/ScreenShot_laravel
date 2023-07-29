@@ -12,7 +12,10 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@vitejs/plugin-vue": "^4.2.3",
         "atob": "^2.1.2",
-        "puppeteer": "^20.8.2"
+        "puppeteer": "^20.8.2",
+        "vue": "^3.2.36",
+        "vue-loader": "^17.0.1"
     }
 }

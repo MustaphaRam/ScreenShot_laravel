@@ -97,7 +97,7 @@ class test_controller extends Controller
         return view('view');
     }
 
-    public function callNodeFunction()
+    public function shotScreen()
     {
         /*// Change the path to your Node.js script
         $nodeScriptPath = base_path('/index.js');
@@ -121,6 +121,8 @@ class test_controller extends Controller
             'https://www.w3schools.com/',
             'spatie.be/docs/'
         ); */
+
+        //read file list urls
         $URLS = $this->getDataFile();
         //dd($URLS);
 
@@ -163,6 +165,18 @@ class test_controller extends Controller
         }
     }
 
+    // this function check and correct url
+    function checkAndAddProtocol($url)
+    {
+        // Check if the URL contains 'http://' or 'https://'
+        if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
+            // If not, add 'https://'
+            $url = 'https://' . $url;
+        }
+        return $url;
+    }
+
+    // this function for read lines file
     public function getDataFile()
     {
         // Open the file in read mode.
@@ -180,32 +194,17 @@ class test_controller extends Controller
         return $data;
     }
 
-    public function checkURL()
+    //get total visits website
+    public function get_total_visit_website()
     {
-        // Example usage
-        $urls = [
-            'www.yabiladi.ma',
-            'https://www.alnasnews.com.jo',
-            'https://github.com/spatie/browsershot',
-            'https://kinsta.com/',
-            'https://iplogger.org/main/',
-            'https://www.w3schools.com/',
-            'spatie.be/docs/'
-        ];
+        $url = "w3schools.com";
 
-        foreach ($urls as $url) {
-            $fixedUrl = $this->checkAndAddProtocol($url);
-            echo "Original URL: $url<br/>";
-            echo "Fixed URL: $fixedUrl<br/><br/>";
-        }
-    }
-    function checkAndAddProtocol($url)
-    {
-        // Check if the URL contains 'http://' or 'https://'
-        if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
-            // If not, add 'https://'
-            $url = 'https://' . $url;
-        }
-        return $url;
+        // Change the path to your Node.js script
+        $nodeScriptPath = base_path('scriptsNode/scraping.js');
+        // Escape the arguments to prevent command injection
+        $escapedSiteURL = escapeshellarg($url);
+        // Execute the Node.js script with the arguments
+        $result = exec("node {$nodeScriptPath} {$escapedSiteURL}");
+        echo $result;
     }
 }
