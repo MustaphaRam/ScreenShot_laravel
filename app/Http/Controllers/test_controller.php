@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Spatie\Browsershot\Browsershot;
 use Exception;
@@ -197,14 +198,45 @@ class test_controller extends Controller
     //get total visits website
     public function get_total_visit_website()
     {
-        $url = "w3schools.com";
+        $tab = [];
+        $URLS = $this->getDataFile();
 
-        // Change the path to your Node.js script
-        $nodeScriptPath = base_path('scriptsNode/scraping.js');
-        // Escape the arguments to prevent command injection
-        $escapedSiteURL = escapeshellarg($url);
-        // Execute the Node.js script with the arguments
-        $result = exec("node {$nodeScriptPath} {$escapedSiteURL}");
-        echo $result;
+        // max time execution request
+        ini_set('max_execution_time', 400);
+        try{
+            foreach ($URLS as $url)
+            {
+                $url = $this->remove_Http_www($url);
+                // Change the path to your Node.js script
+                $nodeScriptPath = base_path('scriptsNode/scraping.js');
+                // Escape the arguments to prevent command injection
+                $escapedSiteURL = escapeshellarg($url);
+                // Execute the Node.js script with the arguments
+                $result = exec("node {$nodeScriptPath} {$escapedSiteURL}");
+                $tab += [$url => $result];
+            }
+
+            foreach ($tab as $data => $val)
+                echo $data.' : '. $val.'<br/>';
+        }catch(Exception $e){
+                echo $e;
+        }
     }
+
+    //function for remove protocole "https?" and "www"
+    function remove_Http_www($url) {
+        // Check if the URL starts with "https://" or "http://"
+        if (preg_match('/^https?:\/\//', $url)) {
+          // Remove the protocol from the URL
+          $url = preg_replace('/^https?:\/\//', '', $url);
+        }
+      
+        // Check if the URL starts with "www."
+        if (preg_match('/^www\./', $url)) {
+          // Remove the "www." from the URL
+          $url = preg_replace('/^www\./', '', $url);
+        }
+      
+        return $url;
+      }     
 }
