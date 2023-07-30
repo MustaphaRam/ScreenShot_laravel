@@ -100,29 +100,6 @@ class test_controller extends Controller
 
     public function shotScreen()
     {
-        /*// Change the path to your Node.js script
-        $nodeScriptPath = base_path('/index.js');
-
-        // The parameter you want to pass to the Node.js script
-        $parameter = "https://www.w3schools.com/";
-
-        // Execute the Node.js script with the parameter
-        $result = exec("node {$nodeScriptPath} {$parameter}");
-
-        // Use $result as needed (it will contain the output from the Node.js script)
-        //return 'first start Node JS '.$result;
-        echo '<img src="/images/'.$result.'"/>';*/
-
-        /* $URLS = array(
-            'www.yabiladi.ma',
-            'https://www.alnasnews.com.jo',
-            'https://github.com/spatie/browsershot',
-            'https://kinsta.com/',
-            'https://iplogger.org/main/',
-            'https://www.w3schools.com/',
-            'spatie.be/docs/'
-        ); */
-
         //read file list urls
         $URLS = $this->getDataFile();
         //dd($URLS);
@@ -224,7 +201,7 @@ class test_controller extends Controller
     }
 
     //function for remove protocole "https?" and "www"
-    function remove_Http_www($url) {
+    public function remove_Http_www($url) {
         // Check if the URL starts with "https://" or "http://"
         if (preg_match('/^https?:\/\//', $url)) {
           // Remove the protocol from the URL
