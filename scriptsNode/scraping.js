@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 function screenShot_byURL(url) {
     try {
         (async () => {
-            const browser = await puppeteer.launch({headless:false});
+            const browser = await puppeteer.launch({headless:'new'});
             const page = await browser.newPage();
             //await page.goto('https://www.similarweb.com/website/'+url+'/#overview', {waitUntil: 'networkidle0'});
             await page.goto('https://www.similarweb.com/website/'+url+'/#overview');
